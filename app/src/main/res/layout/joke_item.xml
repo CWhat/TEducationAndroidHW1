@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="16dp"
-    app:cardCornerRadius="16dp">
+    android:layout_margin="@dimen/card_margin"
+    app:cardCornerRadius="@dimen/card_radius">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp">
+        android:padding="@dimen/card_padding">
 
         <TextView
             android:id="@+id/question"
@@ -27,7 +27,7 @@
             android:id="@+id/answer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/divider"
             android:ellipsize="end"
             android:singleLine="true"
             android:textSize="@dimen/list_text_size"
