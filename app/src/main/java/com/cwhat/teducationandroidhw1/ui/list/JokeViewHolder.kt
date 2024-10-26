@@ -8,6 +8,7 @@ class JokeViewHolder(private val binding: JokeItemBinding) : RecyclerView.ViewHo
 
     fun bind(joke: Joke) {
         joke.run {
+            binding.category.text = category
             binding.question.text = question
             binding.answer.text = answer
         }
