@@ -7,47 +7,39 @@
     android:layout_margin="@dimen/card_margin"
     app:cardCornerRadius="@dimen/card_radius">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:padding="@dimen/card_padding">
 
         <TextView
             android:id="@+id/category"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="textStart"
             android:textSize="@dimen/list_small_text_size"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             tools:text="logical answer" />
 
         <TextView
             android:id="@+id/question"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/divider"
             android:textAlignment="textStart"
             android:textSize="@dimen/list_text_size"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/category"
             tools:text="What does Santa suffer from if he gets stuck in a chimney?" />
 
         <TextView
             android:id="@+id/answer"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/divider"
             android:ellipsize="end"
             android:singleLine="true"
             android:textSize="@dimen/list_text_size"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/question"
             tools:text="Claustrophobia!" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
 </androidx.cardview.widget.CardView>

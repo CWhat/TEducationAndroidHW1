@@ -6,4 +6,5 @@
     <dimen name="card_margin">8dp</dimen>
     <dimen name="card_padding">8dp</dimen>
     <dimen name="divider">8dp</dimen>
+    <dimen name="list_padding_vertical">12dp</dimen>
 </resources>

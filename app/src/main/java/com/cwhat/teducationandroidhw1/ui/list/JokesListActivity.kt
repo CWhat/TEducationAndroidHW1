@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.cwhat.teducationandroidhw1.R
 import com.cwhat.teducationandroidhw1.data.JokesRepository
 import com.cwhat.teducationandroidhw1.databinding.ActivityJokesBinding
@@ -20,9 +21,17 @@ class JokesListActivity : AppCompatActivity() {
         enableEdgeToEdge()
         binding = ActivityJokesBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+        val jokesList = findViewById<RecyclerView>(R.id.jokes_list)
+        val listPaddingTop = jokesList.paddingTop
+        val listPaddingBottom = jokesList.paddingBottom
+        ViewCompat.setOnApplyWindowInsetsListener(jokesList) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            v.setPadding(
+                systemBars.left,
+                systemBars.top + listPaddingTop,
+                systemBars.right,
+                systemBars.bottom + listPaddingBottom
+            )
             insets
         }
 

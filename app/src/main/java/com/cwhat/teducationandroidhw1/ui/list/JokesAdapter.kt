@@ -13,9 +13,9 @@ class JokesAdapter : RecyclerView.Adapter<JokeViewHolder>() {
 
     fun setData(newData: List<Joke>) {
         val callback = JokesDiffUtilCallback(data, newData)
-        val calculateDiff = DiffUtil.calculateDiff(callback)
+        val calculatedDiff = DiffUtil.calculateDiff(callback)
         data = newData
-        calculateDiff.dispatchUpdatesTo(this)
+        calculatedDiff.dispatchUpdatesTo(this)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): JokeViewHolder {
