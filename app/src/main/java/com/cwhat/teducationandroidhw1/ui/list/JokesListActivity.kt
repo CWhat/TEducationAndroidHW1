@@ -10,11 +10,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cwhat.teducationandroidhw1.R
 import com.cwhat.teducationandroidhw1.data.JokesRepository
 import com.cwhat.teducationandroidhw1.databinding.ActivityJokesBinding
+import com.cwhat.teducationandroidhw1.ui.full_view.FullJokeActivity
 
 class JokesListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityJokesBinding
 
-    private val adapter = JokesAdapter()
+    private val adapter = JokesAdapter {
+        val intent = FullJokeActivity.getInstance(this, it)
+        startActivity(intent)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

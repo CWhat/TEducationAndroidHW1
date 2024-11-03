@@ -13,6 +13,9 @@
         android:theme="@style/Theme.TEducationAndroidHW1"
         tools:targetApi="31">
         <activity
+            android:name=".ui.full_view.FullJokeActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.list.JokesListActivity"
             android:exported="true">
             <intent-filter>

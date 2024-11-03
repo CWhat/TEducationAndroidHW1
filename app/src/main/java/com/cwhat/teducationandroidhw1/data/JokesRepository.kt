@@ -2,8 +2,8 @@ package com.cwhat.teducationandroidhw1.data
 
 class JokesRepository {
 
-    fun getJokes(): List<Joke> {
-        return listOf(
+    private companion object {
+        val data = listOf(
             Joke(
                 0,
                 "logical answer",
@@ -47,6 +47,14 @@ class JokesRepository {
                 "An umbrella.",
             ),
         )
+    }
+
+    fun getJokeById(id: Int): Joke {
+        return data.find { it.id == id } ?: error("Element with id $id not found")
+    }
+
+    fun getJokes(): List<Joke> {
+        return data
     }
 
 }

@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="@dimen/card_margin"
-    app:cardCornerRadius="@dimen/card_radius">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.full_view.FullJokeActivity">
+
+    <!--TODO paddings, margins-->
+    <!--TODO design-->
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="@dimen/card_padding">
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/category"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAlignment="textStart"
             android:textSize="@dimen/small_text_size"
             tools:text="logical answer" />
 
@@ -25,8 +26,6 @@
             android:id="@+id/question"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/divider"
-            android:textAlignment="textStart"
             android:textSize="@dimen/main_text_size"
             tools:text="What does Santa suffer from if he gets stuck in a chimney?" />
 
@@ -34,12 +33,9 @@
             android:id="@+id/answer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/divider"
-            android:ellipsize="end"
-            android:singleLine="true"
             android:textSize="@dimen/main_text_size"
             tools:text="Claustrophobia!" />
 
     </LinearLayout>
 
-</androidx.cardview.widget.CardView>
+</ScrollView>
