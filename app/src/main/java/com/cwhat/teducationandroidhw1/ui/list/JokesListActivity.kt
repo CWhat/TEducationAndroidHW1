@@ -2,18 +2,19 @@ package com.cwhat.teducationandroidhw1.ui.list
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cwhat.teducationandroidhw1.R
-import com.cwhat.teducationandroidhw1.data.JokesRepository
 import com.cwhat.teducationandroidhw1.databinding.ActivityJokesBinding
 import com.cwhat.teducationandroidhw1.ui.full_view.FullJokeActivity
 
 class JokesListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityJokesBinding
+    private val jokesViewModel: JokesViewModel by viewModels()
 
     private val adapter = JokesAdapter {
         val intent = FullJokeActivity.getInstance(this, it)
@@ -40,7 +41,7 @@ class JokesListActivity : AppCompatActivity() {
         }
 
         setupList()
-        loadJokes()
+        jokesViewModel.loadJokes()
     }
 
     private fun setupList() {
@@ -48,11 +49,9 @@ class JokesListActivity : AppCompatActivity() {
             adapter = this@JokesListActivity.adapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         }
+        jokesViewModel.jokesList.observe(this) {
+            adapter.setData(it)
+        }
     }
 
-    private fun loadJokes() {
-        val repository = JokesRepository()
-        val jokes = repository.getJokes()
-        adapter.setData(jokes)
-    }
 }
