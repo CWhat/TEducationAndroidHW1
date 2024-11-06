@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.cwhat.teducationandroidhw1.data.Joke
 import com.cwhat.teducationandroidhw1.data.JokesRepository
 
-class FullJokeViewModel(private val repository: JokesRepository = JokesRepository()) : ViewModel() {
+class FullJokeViewModel(private val repository: JokesRepository) : ViewModel() {
 
     private val _joke = MutableLiveData<Joke>()
     val joke: LiveData<Joke> = _joke

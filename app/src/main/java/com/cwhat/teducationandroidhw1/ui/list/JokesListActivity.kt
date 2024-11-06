@@ -2,7 +2,6 @@ package com.cwhat.teducationandroidhw1.ui.list
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -11,10 +10,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cwhat.teducationandroidhw1.R
 import com.cwhat.teducationandroidhw1.databinding.ActivityJokesBinding
 import com.cwhat.teducationandroidhw1.ui.full_view.FullJokeActivity
+import com.cwhat.teducationandroidhw1.ui.jokesViewModels
 
 class JokesListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityJokesBinding
-    private val jokesViewModel: JokesViewModel by viewModels()
+    private val jokesViewModel: JokesViewModel by jokesViewModels { JokesViewModel(it) }
 
     private val adapter = JokesAdapter {
         val intent = FullJokeActivity.getInstance(this, it)

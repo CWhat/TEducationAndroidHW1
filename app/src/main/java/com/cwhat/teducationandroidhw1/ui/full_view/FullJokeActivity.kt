@@ -5,17 +5,17 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.cwhat.teducationandroidhw1.R
 import com.cwhat.teducationandroidhw1.data.Joke
 import com.cwhat.teducationandroidhw1.databinding.ActivityFullJokeBinding
+import com.cwhat.teducationandroidhw1.ui.jokesViewModels
 
 class FullJokeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityFullJokeBinding
-    private val fullJokeViewModel: FullJokeViewModel by viewModels()
+    private val fullJokeViewModel: FullJokeViewModel by jokesViewModels { FullJokeViewModel(it) }
 
     companion object {
         private const val JOKE_ID_EXTRA = "JOKE_ID"

@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:textAlignment="textStart"
             android:textSize="@dimen/small_text_size"
-            tools:text="logical answer" />
+            tools:text="@string/preview_joke_category" />
 
         <TextView
             android:id="@+id/question"
@@ -28,7 +28,7 @@
             android:layout_marginTop="@dimen/divider"
             android:textAlignment="textStart"
             android:textSize="@dimen/main_text_size"
-            tools:text="What does Santa suffer from if he gets stuck in a chimney?" />
+            tools:text="@string/preview_joke_question" />
 
         <TextView
             android:id="@+id/answer"
@@ -38,7 +38,7 @@
             android:ellipsize="end"
             android:singleLine="true"
             android:textSize="@dimen/main_text_size"
-            tools:text="Claustrophobia!" />
+            tools:text="@string/preview_joke_answer" />
 
     </LinearLayout>
 
