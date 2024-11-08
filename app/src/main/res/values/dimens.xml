@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="list_small_text_size">14sp</dimen>
-    <dimen name="list_text_size">18sp</dimen>
+    <dimen name="small_text_size">14sp</dimen>
+    <dimen name="main_text_size">18sp</dimen>
     <dimen name="card_radius">16dp</dimen>
     <dimen name="card_margin">8dp</dimen>
     <dimen name="card_padding">8dp</dimen>
     <dimen name="divider">8dp</dimen>
+    <dimen name="list_padding_vertical">12dp</dimen>
+    <dimen name="divider_thickness">2dp</dimen>
 </resources>

@@ -6,28 +6,42 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.cwhat.teducationandroidhw1.R
-import com.cwhat.teducationandroidhw1.data.JokesRepository
 import com.cwhat.teducationandroidhw1.databinding.ActivityJokesBinding
+import com.cwhat.teducationandroidhw1.ui.full_view.FullJokeActivity
+import com.cwhat.teducationandroidhw1.ui.jokesViewModels
 
 class JokesListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityJokesBinding
+    private val jokesViewModel: JokesViewModel by jokesViewModels { JokesViewModel(it) }
 
-    private val adapter = JokesAdapter()
+    private val adapter = JokesAdapter {
+        val intent = FullJokeActivity.getInstance(this, it)
+        startActivity(intent)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityJokesBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+        val jokesList = findViewById<RecyclerView>(R.id.jokes_list)
+        val listPaddingTop = jokesList.paddingTop
+        val listPaddingBottom = jokesList.paddingBottom
+        ViewCompat.setOnApplyWindowInsetsListener(jokesList) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            v.setPadding(
+                systemBars.left,
+                systemBars.top + listPaddingTop,
+                systemBars.right,
+                systemBars.bottom + listPaddingBottom
+            )
             insets
         }
 
         setupList()
-        loadJokes()
+        jokesViewModel.loadJokes()
     }
 
     private fun setupList() {
@@ -35,11 +49,9 @@ class JokesListActivity : AppCompatActivity() {
             adapter = this@JokesListActivity.adapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         }
+        jokesViewModel.jokesList.observe(this) {
+            adapter.setData(it)
+        }
     }
 
-    private fun loadJokes() {
-        val repository = JokesRepository()
-        val jokes = repository.getJokes()
-        adapter.setData(jokes)
-    }
 }
