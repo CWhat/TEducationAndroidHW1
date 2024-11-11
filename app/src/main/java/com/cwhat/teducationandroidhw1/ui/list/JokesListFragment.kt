@@ -2,6 +2,8 @@ package com.cwhat.teducationandroidhw1.ui.list
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,6 +31,19 @@ class JokesListFragment : Fragment(R.layout.fragment_jokes) {
         with(binding.jokesList) {
             adapter = this@JokesListFragment.adapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
+            val listPaddingTop = paddingTop
+            val listPaddingBottom = paddingBottom
+            ViewCompat.setOnApplyWindowInsetsListener(this) { v, insets ->
+                val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+                v.setPadding(
+                    systemBars.left,
+                    systemBars.top + listPaddingTop,
+                    systemBars.right,
+                    systemBars.bottom + listPaddingBottom,
+                )
+                insets
+            }
         }
         jokesViewModel.jokesList.observe(viewLifecycleOwner) {
             adapter.setData(it)

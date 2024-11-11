@@ -3,6 +3,8 @@ package com.cwhat.teducationandroidhw1.ui.full_view
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -19,8 +21,22 @@ class FullJokeFragment : Fragment(R.layout.fragment_full_joke) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupScreen()
         setupObservers()
         loadJoke()
+    }
+
+    private fun setupScreen() {
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(
+                systemBars.left,
+                systemBars.top,
+                systemBars.right,
+                systemBars.bottom,
+            )
+            insets
+        }
     }
 
     private fun setupObservers() {
