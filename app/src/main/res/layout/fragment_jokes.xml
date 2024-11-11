@@ -6,6 +6,6 @@
     android:layout_height="match_parent"
     android:clipToPadding="false"
     android:paddingVertical="@dimen/list_padding_vertical"
-    tools:context=".ui.list.JokesListActivity"
+    tools:context=".ui.list.JokesListFragment"
     tools:itemCount="7"
     tools:listitem="@layout/joke_item" />
