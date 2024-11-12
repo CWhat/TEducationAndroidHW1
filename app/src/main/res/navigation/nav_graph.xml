@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/jokes_list_fragment">
+
+    <fragment
+        android:id="@+id/jokes_list_fragment"
+        android:name="com.cwhat.teducationandroidhw1.ui.list.JokesListFragment"
+        android:label="jokes_list_fragment"
+        tools:layout="@layout/fragment_jokes">
+        <action
+            android:id="@+id/action_jokesListFragment_to_fullJokeFragment"
+            app:destination="@id/full_joke_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/full_joke_fragment"
+        android:name="com.cwhat.teducationandroidhw1.ui.full_view.FullJokeFragment"
+        android:label="full_joke_fragment"
+        tools:layout="@layout/fragment_full_joke">
+        <argument
+            android:name="joke_id"
+            app:argType="integer" />
+    </fragment>
+
+</navigation>
