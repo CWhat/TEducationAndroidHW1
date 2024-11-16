@@ -3,4 +3,11 @@
     <string name="preview_joke_category">logical answer</string>
     <string name="preview_joke_question">What does Santa suffer from if he gets stuck in a chimney?</string>
     <string name="preview_joke_answer">Claustrophobia!</string>
+    <string name="description_add_joke">add joke</string>
+    <string name="btn_add_joke">Add</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="category">category</string>
+    <string name="question">question</string>
+    <string name="answer">answer</string>
+    <string name="empty_fields">Please fill in all fields!</string>
 </resources>

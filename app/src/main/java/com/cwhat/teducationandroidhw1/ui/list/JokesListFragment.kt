@@ -24,6 +24,7 @@ class JokesListFragment : Fragment(R.layout.fragment_jokes) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupList()
+        setupFabOnClickListener()
         jokesViewModel.loadJokes()
     }
 
@@ -47,6 +48,13 @@ class JokesListFragment : Fragment(R.layout.fragment_jokes) {
         }
         jokesViewModel.jokesList.observe(viewLifecycleOwner) {
             adapter.setData(it)
+        }
+    }
+
+    private fun setupFabOnClickListener() {
+        binding.fabAddJoke.setOnClickListener {
+            val action = JokesListFragmentDirections.actionJokesListFragmentToAddJokeFragment()
+            findNavController().navigate(action)
         }
     }
 
