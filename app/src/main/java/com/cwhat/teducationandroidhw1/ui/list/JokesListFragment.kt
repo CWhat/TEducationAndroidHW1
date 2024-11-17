@@ -5,12 +5,17 @@ import android.view.View
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.cwhat.teducationandroidhw1.R
+import com.cwhat.teducationandroidhw1.data.Joke
 import com.cwhat.teducationandroidhw1.databinding.FragmentJokesBinding
 import com.cwhat.teducationandroidhw1.ui.jokesViewModels
+import kotlinx.coroutines.launch
 
 class JokesListFragment : Fragment(R.layout.fragment_jokes) {
     private val binding: FragmentJokesBinding by viewBinding(FragmentJokesBinding::bind)
@@ -25,7 +30,6 @@ class JokesListFragment : Fragment(R.layout.fragment_jokes) {
         super.onViewCreated(view, savedInstanceState)
         setupList()
         setupFabOnClickListener()
-        jokesViewModel.loadJokes()
     }
 
     private fun setupList() {
@@ -46,9 +50,46 @@ class JokesListFragment : Fragment(R.layout.fragment_jokes) {
                 insets
             }
         }
-        jokesViewModel.jokesList.observe(viewLifecycleOwner) {
-            adapter.setData(it)
+        observeState()
+    }
+
+    private fun observeState() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                jokesViewModel.state.collect { state ->
+                    when (state) {
+                        is JokesState.Loading -> setLoadingState()
+                        is JokesState.EmptyList -> setEmptyListState()
+                        is JokesState.ShowJokes -> setJokesListState(state.jokes)
+                    }
+                }
+            }
         }
+    }
+
+    private fun setLoadingState() {
+        with(binding) {
+            loading.visibility = View.VISIBLE
+            jokesList.visibility = View.GONE
+            emptyListMessage.visibility = View.GONE
+        }
+    }
+
+    private fun setEmptyListState() {
+        with(binding) {
+            loading.visibility = View.GONE
+            jokesList.visibility = View.GONE
+            emptyListMessage.visibility = View.VISIBLE
+        }
+    }
+
+    private fun setJokesListState(data: List<Joke>) {
+        with(binding) {
+            loading.visibility = View.GONE
+            jokesList.visibility = View.VISIBLE
+            emptyListMessage.visibility = View.GONE
+        }
+        adapter.setData(data)
     }
 
     private fun setupFabOnClickListener() {

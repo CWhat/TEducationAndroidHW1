@@ -2,10 +2,12 @@
 <resources>
     <dimen name="small_text_size">14sp</dimen>
     <dimen name="main_text_size">18sp</dimen>
+    <dimen name="large_text_size">28sp</dimen>
     <dimen name="card_radius">16dp</dimen>
     <dimen name="card_margin">8dp</dimen>
     <dimen name="card_padding">8dp</dimen>
     <dimen name="divider">8dp</dimen>
     <dimen name="list_padding_vertical">12dp</dimen>
     <dimen name="divider_thickness">2dp</dimen>
+    <dimen name="message_max_width">300dp</dimen>
 </resources>

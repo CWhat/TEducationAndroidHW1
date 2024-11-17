@@ -1,22 +1,28 @@
 package com.cwhat.teducationandroidhw1.ui.list
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.cwhat.teducationandroidhw1.data.Joke
 import com.cwhat.teducationandroidhw1.data.JokesRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class JokesViewModel(private val repository: JokesRepository) : ViewModel() {
 
-    private val _jokesList = MutableLiveData<List<Joke>>()
-    val jokesList: LiveData<List<Joke>> = _jokesList
+    private val _state = MutableStateFlow<JokesState>(JokesState.Loading)
+    val state: StateFlow<JokesState> = _state
 
-    fun loadJokes() {
+    init {
+        observableJokes()
+    }
+
+    private fun observableJokes() {
         viewModelScope.launch {
-            val jokes = repository.getJokes()
-            _jokesList.postValue(jokes)
+            repository.getJokes().collect { jokes ->
+                _state.value =
+                    if (jokes.isEmpty()) JokesState.EmptyList
+                    else JokesState.ShowJokes(jokes)
+            }
         }
     }
 

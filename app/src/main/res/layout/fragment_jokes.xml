@@ -12,8 +12,10 @@
         android:layout_height="match_parent"
         android:clipToPadding="false"
         android:paddingVertical="@dimen/list_padding_vertical"
+        android:visibility="gone"
         tools:itemCount="7"
-        tools:listitem="@layout/joke_item" />
+        tools:listitem="@layout/joke_item"
+        tools:visibility="visible" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add_joke"
@@ -24,5 +26,23 @@
         android:contentDescription="@string/description_add_joke"
         android:src="@drawable/ic_add"
         app:fabSize="mini" />
+
+    <ProgressBar
+        android:id="@+id/loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+
+    <TextView
+        android:id="@+id/empty_list_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:maxWidth="@dimen/message_max_width"
+        android:text="@string/empty_list"
+        android:textAlignment="center"
+        android:textSize="@dimen/large_text_size"
+        android:visibility="gone"
+        tools:visibility="visible" />
 
 </FrameLayout>
