@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.onSubscription
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.CoroutineContext
+import kotlin.time.Duration.Companion.seconds
 
 object SimpleJokesRepository : JokesRepository {
 
@@ -17,6 +18,8 @@ object SimpleJokesRepository : JokesRepository {
     private val flowData = MutableStateFlow<List<Joke>?>(null)
 
     private val context: CoroutineContext = Dispatchers.IO
+
+    private val delayValue = 3.seconds
 
     private suspend fun loadInitData() {
         withContext(context) {
@@ -31,14 +34,14 @@ object SimpleJokesRepository : JokesRepository {
 
     override suspend fun getJokes(): Flow<List<Joke>> = flowData.onSubscription {
         loadInitData()
-        delay(3000)
+        delay(delayValue)
     }.filterNotNull()
 
     override suspend fun addJoke(joke: Joke) {
         withContext(context) {
             val lastData = flowData.filterNotNull().first()
-            val lastId = lastData.maxOfOrNull { it.id } ?: -1
-            flowData.value = lastData.toMutableList().apply { add(joke.copy(id = lastId + 1)) }
+            val newId = if (lastData.isEmpty()) 0 else (lastData.maxOf { it.id } + 1)
+            flowData.value = lastData.toMutableList().apply { add(joke.copy(id = newId)) }
         }
     }
 

@@ -27,7 +27,7 @@ class AddJokeViewModel(private val jokesRepository: JokesRepository) : ViewModel
             return
         }
 
-        val joke = Joke(-1, category, question, answer)
+        val joke = Joke(category, question, answer)
         viewModelScope.launch {
             jokesRepository.addJoke(joke)
             _events.emit(AddJokeEvent.NavigateToBack)

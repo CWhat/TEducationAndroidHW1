@@ -40,14 +40,16 @@ class AddJokeFragment : Fragment(R.layout.fragment_add_joke) {
     }
 
     private fun setupListeners() {
-        binding.btnAdd.setOnClickListener {
-            val categoryText = binding.category.text.toString()
-            val questionText = binding.question.text.toString()
-            val answerText = binding.answer.text.toString()
-            viewModel.addJoke(categoryText, questionText, answerText)
-        }
-        binding.btnCancel.setOnClickListener {
-            navigateToBack()
+        with(binding) {
+            btnAdd.setOnClickListener {
+                val categoryText = category.text.toString()
+                val questionText = question.text.toString()
+                val answerText = answer.text.toString()
+                viewModel.addJoke(categoryText, questionText, answerText)
+            }
+            btnCancel.setOnClickListener {
+                navigateToBack()
+            }
         }
     }
 
