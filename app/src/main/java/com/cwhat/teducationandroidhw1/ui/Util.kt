@@ -6,13 +6,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.cwhat.teducationandroidhw1.data.JokesRepository
+import com.cwhat.teducationandroidhw1.data.provideJokesRepository
 
 inline fun <reified VM : ViewModel> Fragment.jokesViewModels(
     crossinline viewModelCreator: (JokesRepository) -> VM,
 ) = viewModels<VM> {
     viewModelFactory {
         initializer {
-            val repository = JokesRepository()
+            val repository = provideJokesRepository()
             viewModelCreator(repository)
         }
     }
