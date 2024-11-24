@@ -1,17 +1,18 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.serialization)
     id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
     namespace = "com.cwhat.teducationandroidhw1"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.cwhat.teducationandroidhw1"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -50,6 +51,7 @@ dependencies {
     implementation(libs.kirich1409.viewbindingpropertydelegate)
     implementation(libs.androidx.navigation.fragment)
     implementation(libs.androidx.navigation.ui)
+    implementation(libs.kotlin.serialization.json)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
