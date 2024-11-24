@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cwhat.teducationandroidhw1.R
 import com.cwhat.teducationandroidhw1.data.Joke
+import com.cwhat.teducationandroidhw1.data.JokeType
 import com.cwhat.teducationandroidhw1.data.JokesRepository
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -27,7 +28,7 @@ class AddJokeViewModel(private val jokesRepository: JokesRepository) : ViewModel
             return
         }
 
-        val joke = Joke(category, question, answer)
+        val joke = Joke(category, question, answer, JokeType.Local)
         viewModelScope.launch {
             jokesRepository.addJoke(joke)
             _events.emit(AddJokeEvent.NavigateToBack)

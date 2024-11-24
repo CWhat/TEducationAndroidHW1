@@ -1,6 +1,7 @@
 package com.cwhat.teducationandroidhw1.data.remote
 
 import com.cwhat.teducationandroidhw1.data.Joke
+import com.cwhat.teducationandroidhw1.data.JokeType
 import kotlinx.serialization.Serializable
 
 // For two-part jokes
@@ -21,4 +22,5 @@ fun RemoteJoke.toJoke(): Joke = Joke(
     question = setup,
     answer = delivery,
     id = id,
+    type = JokeType.Remote,
 )
