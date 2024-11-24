@@ -46,5 +46,3 @@ object SimpleJokesRepository : JokesRepository {
     }
 
 }
-
-fun provideJokesRepository(): JokesRepository = SimpleJokesRepository
