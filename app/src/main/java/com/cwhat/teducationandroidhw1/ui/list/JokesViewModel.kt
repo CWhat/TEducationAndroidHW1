@@ -17,14 +17,23 @@ class JokesViewModel(private val repository: JokesRepository, private val api: R
     private val _state = MutableStateFlow<JokesState>(JokesState.Loading)
     val state: StateFlow<JokesState> = _state
 
+    private var isLoading = false
+
     init {
         observableJokes()
+    }
 
+    fun loadJokes() {
         viewModelScope.launch {
+            if (isLoading)
+                return@launch
+
+            isLoading = true
             val remoteJokes = withContext(Dispatchers.IO) {
                 api.getJokes().jokes.map { it.toJoke() }
             }
             repository.addJokes(remoteJokes)
+            isLoading = false
         }
     }
 

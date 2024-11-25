@@ -33,8 +33,10 @@ object DI {
         retrofit.create(RemoteApi::class.java)
     }
 
+    private val repository: JokesRepository by lazy { WithNetworkJokesRepository(remoteApi) }
+
     fun provideRemoteApi(): RemoteApi = remoteApi
 
-    fun provideJokesRepository(): JokesRepository = WithNetworkJokesRepository
+    fun provideJokesRepository(): JokesRepository = repository
 
 }

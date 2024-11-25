@@ -1,5 +1,7 @@
 package com.cwhat.teducationandroidhw1.data
 
+import com.cwhat.teducationandroidhw1.data.remote.RemoteApi
+import com.cwhat.teducationandroidhw1.data.remote.toJoke
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -12,7 +14,7 @@ import kotlinx.coroutines.withContext
 import kotlin.coroutines.CoroutineContext
 import kotlin.time.Duration.Companion.seconds
 
-object WithNetworkJokesRepository : JokesRepository {
+class WithNetworkJokesRepository(private val api: RemoteApi) : JokesRepository {
 
     private val initLocalData = emptyList<Joke>()
 
@@ -26,10 +28,27 @@ object WithNetworkJokesRepository : JokesRepository {
 
     private val delayValue = 3.seconds
 
+    private var isLoading = false
+
+    private suspend fun loadRemoteJokes() {
+        withContext(context) {
+            if (isLoading)
+                return@withContext
+
+            isLoading = true
+            val remoteJokes = api.getJokes().jokes.map { it.toJoke() }
+            addJokes(remoteJokes)
+            isLoading = false
+        }
+    }
+
     private suspend fun loadInitData() {
         withContext(context) {
             if (flowLocalData.value == null) flowLocalData.value = initLocalData
-            if (flowRemoteData.value == null) flowRemoteData.value = initRemoteData
+            if (flowRemoteData.value == null) {
+                flowRemoteData.value = initRemoteData
+                loadRemoteJokes()
+            }
         }
     }
 

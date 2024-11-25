@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.cwhat.teducationandroidhw1.R
 import com.cwhat.teducationandroidhw1.data.Joke
@@ -38,6 +39,21 @@ class JokesListFragment : Fragment(R.layout.fragment_jokes) {
         setupFabOnClickListener()
     }
 
+    private fun setOnScrollListener() {
+        binding.jokesList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (dy <= 0) return
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                val totalItemCount = layoutManager.itemCount
+                val lastVisible = layoutManager.findLastVisibleItemPosition()
+
+                val endHasBeenReached = lastVisible + 1 >= totalItemCount
+                if (totalItemCount > 0 && endHasBeenReached)
+                    jokesViewModel.loadJokes()
+            }
+        })
+    }
+
     private fun setupList() {
         with(binding.jokesList) {
             adapter = this@JokesListFragment.adapter
@@ -57,6 +73,7 @@ class JokesListFragment : Fragment(R.layout.fragment_jokes) {
             }
         }
         observeState()
+        setOnScrollListener()
     }
 
     private fun observeState() {
