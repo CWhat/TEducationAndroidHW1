@@ -2,6 +2,7 @@ package com.cwhat.teducationandroidhw1.ui.list
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
@@ -92,6 +93,14 @@ class JokesListFragment : Fragment(R.layout.fragment_jokes) {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 jokesViewModel.isLoading.collect { adapter.isLoading = it }
+            }
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                jokesViewModel.errors.collect { message ->
+                    Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+                }
             }
         }
     }
