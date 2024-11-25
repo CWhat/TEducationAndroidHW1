@@ -88,6 +88,12 @@ class JokesListFragment : Fragment(R.layout.fragment_jokes) {
                 }
             }
         }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                jokesViewModel.isLoading.collect { adapter.isLoading = it }
+            }
+        }
     }
 
     private fun setLoadingState() {

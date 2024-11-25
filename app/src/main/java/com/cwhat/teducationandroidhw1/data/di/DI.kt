@@ -3,6 +3,8 @@ package com.cwhat.teducationandroidhw1.data.di
 import com.cwhat.teducationandroidhw1.data.JokesRepository
 import com.cwhat.teducationandroidhw1.data.WithNetworkJokesRepository
 import com.cwhat.teducationandroidhw1.data.remote.RemoteApi
+import com.cwhat.teducationandroidhw1.data.remote.RemoteApiWithContext
+import kotlinx.coroutines.Dispatchers
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -30,7 +32,9 @@ object DI {
             )
             .build()
 
-        retrofit.create(RemoteApi::class.java)
+        val baseApi = retrofit.create(RemoteApi::class.java)
+
+        RemoteApiWithContext(baseApi, Dispatchers.IO)
     }
 
     private val repository: JokesRepository by lazy { WithNetworkJokesRepository(remoteApi) }
