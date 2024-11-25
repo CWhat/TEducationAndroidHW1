@@ -5,9 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.cwhat.teducationandroidhw1.data.Joke
+import com.cwhat.teducationandroidhw1.data.JokeType
 import com.cwhat.teducationandroidhw1.databinding.JokeItemBinding
 
-class JokesAdapter(private val onItemClick: (id: Int) -> Unit) :
+class JokesAdapter(private val onItemClick: (id: Int, type: JokeType) -> Unit) :
     RecyclerView.Adapter<JokeViewHolder>() {
 
     private var data = emptyList<Joke>()
@@ -38,7 +39,7 @@ class JokesAdapter(private val onItemClick: (id: Int) -> Unit) :
     private fun handleJokeClick(position: Int) {
         if (position != RecyclerView.NO_POSITION) {
             val item = data[position]
-            onItemClick(item.id)
+            onItemClick(item.id, item.type)
         }
     }
 

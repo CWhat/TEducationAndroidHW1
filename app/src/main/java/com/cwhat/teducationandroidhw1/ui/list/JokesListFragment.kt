@@ -13,16 +13,22 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.cwhat.teducationandroidhw1.R
 import com.cwhat.teducationandroidhw1.data.Joke
+import com.cwhat.teducationandroidhw1.data.di.DI
 import com.cwhat.teducationandroidhw1.databinding.FragmentJokesBinding
 import com.cwhat.teducationandroidhw1.ui.jokesViewModels
 import kotlinx.coroutines.launch
 
 class JokesListFragment : Fragment(R.layout.fragment_jokes) {
     private val binding: FragmentJokesBinding by viewBinding(FragmentJokesBinding::bind)
-    private val jokesViewModel: JokesViewModel by jokesViewModels { JokesViewModel(it) }
+    private val jokesViewModel: JokesViewModel by jokesViewModels {
+        JokesViewModel(
+            it,
+            DI.provideRemoteApi(),
+        )
+    }
 
-    private val adapter = JokesAdapter { id ->
-        val action = JokesListFragmentDirections.actionJokesListFragmentToFullJokeFragment(id)
+    private val adapter = JokesAdapter { id, type ->
+        val action = JokesListFragmentDirections.actionJokesListFragmentToFullJokeFragment(id, type)
         findNavController().navigate(action)
     }
 

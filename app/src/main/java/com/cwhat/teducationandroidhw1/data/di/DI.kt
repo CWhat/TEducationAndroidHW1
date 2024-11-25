@@ -1,7 +1,7 @@
 package com.cwhat.teducationandroidhw1.data.di
 
 import com.cwhat.teducationandroidhw1.data.JokesRepository
-import com.cwhat.teducationandroidhw1.data.SimpleJokesRepository
+import com.cwhat.teducationandroidhw1.data.WithNetworkJokesRepository
 import com.cwhat.teducationandroidhw1.data.remote.RemoteApi
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -35,6 +35,6 @@ object DI {
 
     fun provideRemoteApi(): RemoteApi = remoteApi
 
-    fun provideJokesRepository(): JokesRepository = SimpleJokesRepository
+    fun provideJokesRepository(): JokesRepository = WithNetworkJokesRepository
 
 }

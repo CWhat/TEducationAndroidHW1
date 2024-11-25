@@ -11,8 +11,11 @@ class JokesDiffUtilCallback(
 
     override fun getNewListSize(): Int = newData.size
 
-    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-        oldData[oldItemPosition].id == newData[newItemPosition].id
+    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        val oldItem = oldData[oldItemPosition]
+        val newItem = newData[newItemPosition]
+        return oldItem.id == newItem.id && oldItem.type == newItem.type
+    }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
         oldData[oldItemPosition] == newData[newItemPosition]

@@ -13,11 +13,16 @@ interface RemoteApi {
 
         val DEFAULT_BLACKLIST =
             listOf("nsfw", "religious", "political", "racist", "sexist", "explicit")
+
+        const val TWOPART_TYPE = "twopart"
+
+        const val SINGLE_TYPE = "single"
     }
 
     @GET("joke/Any")
     suspend fun getJokes(
         @Query("amount") amount: Int = DEFAULT_AMOUNT,
         @Query("blacklistFlags") blacklist: List<String> = DEFAULT_BLACKLIST,
+        @Query("type") type: String = TWOPART_TYPE,
     ): RemoteResult
 }

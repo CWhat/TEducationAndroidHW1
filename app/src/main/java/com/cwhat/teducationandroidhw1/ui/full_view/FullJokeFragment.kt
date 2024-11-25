@@ -65,7 +65,7 @@ class FullJokeFragment : Fragment(R.layout.fragment_full_joke) {
     }
 
     private fun loadJoke() {
-        fullJokeViewModel.loadJoke(args.jokeId)
+        fullJokeViewModel.loadJoke(args.jokeId, args.jokeType)
     }
 
 }
