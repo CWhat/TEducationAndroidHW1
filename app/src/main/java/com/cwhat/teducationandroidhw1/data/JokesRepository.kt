@@ -4,10 +4,15 @@ import kotlinx.coroutines.flow.Flow
 
 interface JokesRepository {
 
-    suspend fun getJokeById(id: Int): Joke
+    suspend fun getJokeById(id: Int, type: JokeType): Joke
 
     suspend fun getJokes(): Flow<List<Joke>>
 
     suspend fun addJoke(joke: Joke)
+
+    suspend fun addJokes(jokes: List<Joke>) {
+        for (joke in jokes)
+            addJoke(joke)
+    }
 
 }

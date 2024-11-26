@@ -13,6 +13,7 @@ import com.cwhat.teducationandroidhw1.R
 import com.cwhat.teducationandroidhw1.data.Joke
 import com.cwhat.teducationandroidhw1.databinding.FragmentFullJokeBinding
 import com.cwhat.teducationandroidhw1.ui.jokesViewModels
+import com.cwhat.teducationandroidhw1.ui.typeToString
 
 class FullJokeFragment : Fragment(R.layout.fragment_full_joke) {
     private val binding: FragmentFullJokeBinding by viewBinding(FragmentFullJokeBinding::bind)
@@ -53,6 +54,8 @@ class FullJokeFragment : Fragment(R.layout.fragment_full_joke) {
             binding.category.text = category
             binding.question.text = question
             binding.answer.text = answer
+            context
+            binding.type.text = requireContext().typeToString(type)
         }
     }
 
@@ -62,7 +65,7 @@ class FullJokeFragment : Fragment(R.layout.fragment_full_joke) {
     }
 
     private fun loadJoke() {
-        fullJokeViewModel.loadJoke(args.jokeId)
+        fullJokeViewModel.loadJoke(args.jokeId, args.jokeType)
     }
 
 }

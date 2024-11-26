@@ -4,6 +4,7 @@ data class Joke(
     val category: String,
     val question: String,
     val answer: String,
+    val type: JokeType,
     val id: Int = UNDEFINED_ID,
 ) {
 

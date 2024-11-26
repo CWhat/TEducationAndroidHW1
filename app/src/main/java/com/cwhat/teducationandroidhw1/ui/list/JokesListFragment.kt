@@ -2,6 +2,7 @@ package com.cwhat.teducationandroidhw1.ui.list
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
@@ -10,19 +11,26 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.cwhat.teducationandroidhw1.R
 import com.cwhat.teducationandroidhw1.data.Joke
+import com.cwhat.teducationandroidhw1.data.di.DI
 import com.cwhat.teducationandroidhw1.databinding.FragmentJokesBinding
 import com.cwhat.teducationandroidhw1.ui.jokesViewModels
 import kotlinx.coroutines.launch
 
 class JokesListFragment : Fragment(R.layout.fragment_jokes) {
     private val binding: FragmentJokesBinding by viewBinding(FragmentJokesBinding::bind)
-    private val jokesViewModel: JokesViewModel by jokesViewModels { JokesViewModel(it) }
+    private val jokesViewModel: JokesViewModel by jokesViewModels {
+        JokesViewModel(
+            it,
+            DI.provideRemoteApi(),
+        )
+    }
 
-    private val adapter = JokesAdapter { id ->
-        val action = JokesListFragmentDirections.actionJokesListFragmentToFullJokeFragment(id)
+    private val adapter = JokesAdapter { id, type ->
+        val action = JokesListFragmentDirections.actionJokesListFragmentToFullJokeFragment(id, type)
         findNavController().navigate(action)
     }
 
@@ -30,6 +38,21 @@ class JokesListFragment : Fragment(R.layout.fragment_jokes) {
         super.onViewCreated(view, savedInstanceState)
         setupList()
         setupFabOnClickListener()
+    }
+
+    private fun setOnScrollListener() {
+        binding.jokesList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (dy <= 0) return
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                val totalItemCount = layoutManager.itemCount
+                val lastVisible = layoutManager.findLastVisibleItemPosition()
+
+                val endHasBeenReached = lastVisible + 1 >= totalItemCount
+                if (totalItemCount > 0 && endHasBeenReached)
+                    jokesViewModel.loadJokes()
+            }
+        })
     }
 
     private fun setupList() {
@@ -51,6 +74,7 @@ class JokesListFragment : Fragment(R.layout.fragment_jokes) {
             }
         }
         observeState()
+        setOnScrollListener()
     }
 
     private fun observeState() {
@@ -62,6 +86,20 @@ class JokesListFragment : Fragment(R.layout.fragment_jokes) {
                         is JokesState.EmptyList -> setEmptyListState()
                         is JokesState.ShowJokes -> setJokesListState(state.jokes)
                     }
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                jokesViewModel.isLoading.collect { adapter.isLoading = it }
+            }
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                jokesViewModel.errors.collect { message ->
+                    Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
                 }
             }
         }
