@@ -1,7 +1,13 @@
 package com.cwhat.teducationandroidhw1.data
 
+import android.icu.util.Calendar
+import com.cwhat.teducationandroidhw1.data.db.DB_UNDEFINED_ID
+import com.cwhat.teducationandroidhw1.data.db.DbLocalJoke
+import com.cwhat.teducationandroidhw1.data.db.LocalJokeDao
+import com.cwhat.teducationandroidhw1.data.db.RemoteJokeDao
 import com.cwhat.teducationandroidhw1.data.remote.RemoteApi
 import com.cwhat.teducationandroidhw1.data.remote.toJoke
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -9,14 +15,18 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onSubscription
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.CoroutineContext
 import kotlin.time.Duration.Companion.seconds
 
-class WithNetworkJokesRepository(private val api: RemoteApi) : JokesRepository {
-
-    private val initLocalData = emptyList<Joke>()
+class WithNetworkAndDbJokesRepository(
+    private val api: RemoteApi,
+    private val localJokeDao: LocalJokeDao,
+    private val remoteJokeDao: RemoteJokeDao,
+) : JokesRepository {
 
     private val initRemoteData = emptyList<Joke>()
 
@@ -25,6 +35,8 @@ class WithNetworkJokesRepository(private val api: RemoteApi) : JokesRepository {
     private val flowRemoteData = MutableStateFlow<List<Joke>?>(null)
 
     private val context: CoroutineContext = Dispatchers.IO
+
+    private val coroutineScope = CoroutineScope(context)
 
     private val delayValue = 3.seconds
 
@@ -42,9 +54,29 @@ class WithNetworkJokesRepository(private val api: RemoteApi) : JokesRepository {
         }
     }
 
+    private fun List<DbLocalJoke>.toJokes(): List<Joke> = this.map { joke ->
+        with(joke) {
+            Joke(
+                category = category,
+                question = question,
+                answer = answer,
+                type = JokeType.Local,
+                id = id
+            )
+        }
+    }
+
+    private fun loadLocalJokes() {
+        coroutineScope.launch {
+            localJokeDao.getAllJokes()
+                .map { dbJokes -> dbJokes.toJokes() }
+                .collect { flowLocalData.value = it }
+        }
+    }
+
     private suspend fun loadInitData() {
         withContext(context) {
-            if (flowLocalData.value == null) flowLocalData.value = initLocalData
+            if (flowLocalData.value == null) loadLocalJokes()
             if (flowRemoteData.value == null) {
                 flowRemoteData.value = initRemoteData
                 loadRemoteJokes()
@@ -73,32 +105,34 @@ class WithNetworkJokesRepository(private val api: RemoteApi) : JokesRepository {
         }
         .filterNotNull()
 
-    private fun generateNewId(jokes: List<Joke>) =
-        if (jokes.isEmpty()) 0 else (jokes.maxOf { it.id } + 1)
+    private fun getCurrentTime(): Long = Calendar.getInstance().timeInMillis
 
-    private suspend fun addLocalJoke(joke: Joke) {
-        withContext(context) {
-            require(joke.type == JokeType.Local) { "joke must be local" }
-            val lastData = flowLocalData.filterNotNull().first()
-            val newId = generateNewId(lastData)
-            flowLocalData.value = lastData.toMutableList().apply { add(joke.copy(id = newId)) }
-        }
+    private fun Joke.checkUndefinedId(): Int = if (id == Joke.UNDEFINED_ID) DB_UNDEFINED_ID else id
+
+    private fun Joke.toDbLocalJoke(): DbLocalJoke {
+        require(type == JokeType.Local) { "joke must be local" }
+        return DbLocalJoke(
+            category = category,
+            question = question,
+            answer = answer,
+            timestamp = getCurrentTime(),
+            id = checkUndefinedId()
+        )
     }
 
-    private fun List<Joke>.mapWithId(startId: Int): List<Joke> =
-        mapIndexed { i, joke -> joke.copy(id = startId + i) }
+    private suspend fun addLocalJoke(joke: Joke) {
+        require(joke.type == JokeType.Local) { "joke must be local" }
+        localJokeDao.insertJoke(joke.toDbLocalJoke())
+    }
 
     private suspend fun addLocalJokes(jokes: List<Joke>) {
         if (jokes.isEmpty())
             return
 
-        withContext(context) {
-            require(jokes.all { it.type == JokeType.Local }) { "jokes must be local" }
-            val lastData = flowLocalData.filterNotNull().first()
-            val newStartId = generateNewId(lastData)
-            flowLocalData.value =
-                lastData.toMutableList().apply { addAll(jokes.mapWithId(newStartId)) }
-        }
+        require(jokes.all { it.type == JokeType.Local }) { "jokes must be local" }
+        localJokeDao.insertJokes(
+            jokes.map { it.toDbLocalJoke() }
+        )
     }
 
     private suspend fun addRemoteJoke(joke: Joke) {
