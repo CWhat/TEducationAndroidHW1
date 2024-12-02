@@ -13,4 +13,6 @@
     <string name="empty_list">Jokes left the chat, add a new one!</string>
     <string name="joke_type_local">Local</string>
     <string name="joke_type_remote">Remote</string>
+    <string name="jokes_loaded_from_cache_message">Internet problems, jokes loaded from cache!</string>
+    <string name="empty_cache_message">Internet problems, try again later!</string>
 </resources>

@@ -94,8 +94,15 @@ class JokesListFragment : Fragment(R.layout.fragment_jokes) {
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                jokesViewModel.errors.collect { message ->
-                    Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+                jokesViewModel.errors.collect { error ->
+                    val toast = when (error) {
+                        is JokesError.ErrorWithString ->
+                            Toast.makeText(requireContext(), error.message, Toast.LENGTH_LONG)
+
+                        is JokesError.ErrorWithId ->
+                            Toast.makeText(requireContext(), error.resId, Toast.LENGTH_LONG)
+                    }
+                    toast.show()
                 }
             }
         }

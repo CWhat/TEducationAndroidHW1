@@ -2,19 +2,19 @@ package com.cwhat.teducationandroidhw1.data.db
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface RemoteJokeDao {
 
     @Query("SELECT * FROM $REMOTE_JOKES_TABLE ORDER BY $TIMESTAMP_COLUMN ASC")
-    fun getAllJokes(): Flow<List<DbRemoteJoke>>
+    suspend fun getAllJokes(): List<DbRemoteJoke>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertJoke(joke: DbRemoteJoke)
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertJokes(jokes: List<DbRemoteJoke>)
 
     @Query("DELETE FROM $REMOTE_JOKES_TABLE WHERE $TIMESTAMP_COLUMN < :timestamp")

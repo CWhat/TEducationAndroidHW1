@@ -2,6 +2,8 @@ package com.cwhat.teducationandroidhw1.ui.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.cwhat.teducationandroidhw1.R
+import com.cwhat.teducationandroidhw1.data.EmptyCacheException
 import com.cwhat.teducationandroidhw1.data.JokesRepository
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -15,12 +17,12 @@ import kotlinx.coroutines.launch
 class JokesViewModel(private val repository: JokesRepository) :
     ViewModel() {
 
-    private val _errors = MutableSharedFlow<String>(
+    private val _errors = MutableSharedFlow<JokesError>(
         replay = 0,
         extraBufferCapacity = 1,
         onBufferOverflow = BufferOverflow.DROP_LATEST,
     )
-    val errors: SharedFlow<String> = _errors
+    val errors: SharedFlow<JokesError> = _errors
 
     // So that in case of a network error there is no situation with constant attempts to download
     // jokes
@@ -46,20 +48,29 @@ class JokesViewModel(private val repository: JokesRepository) :
             try {
                 repository.loadNextPage()
             } catch (t: Throwable) {
-                errorOccurred = true
-                _errors.emit(t.message ?: "Load error")
+                catchException(t)
             } finally {
                 _isLoading.value = false
             }
         }
     }
 
+    private suspend fun catchException(t: Throwable) {
+        errorOccurred = true
+
+        _errors.emit(
+            JokesError.ErrorWithId(
+                if (t is EmptyCacheException) R.string.empty_cache_message
+                else R.string.jokes_loaded_from_cache_message
+            )
+        )
+    }
+
     private fun observableJokes() {
         viewModelScope.launch {
             repository.getJokes()
                 .catch { cause ->
-                    errorOccurred = true
-                    _errors.emit(cause.message ?: "Load error")
+                    catchException(cause)
                     if (_state.value == JokesState.Loading) throw cause
                 }
                 // If there is a network error on a first load, we need to read a value again to

@@ -3,8 +3,11 @@ package com.cwhat.teducationandroidhw1.data
 import android.icu.util.Calendar
 import com.cwhat.teducationandroidhw1.data.db.DB_UNDEFINED_ID
 import com.cwhat.teducationandroidhw1.data.db.DbLocalJoke
+import com.cwhat.teducationandroidhw1.data.db.DbRemoteJoke
 import com.cwhat.teducationandroidhw1.data.db.LocalJokeDao
+import com.cwhat.teducationandroidhw1.data.db.MILLISECONDS_IN_DAY
 import com.cwhat.teducationandroidhw1.data.db.RemoteJokeDao
+import com.cwhat.teducationandroidhw1.data.db.toJokes
 import com.cwhat.teducationandroidhw1.data.remote.RemoteApi
 import com.cwhat.teducationandroidhw1.data.remote.toJoke
 import kotlinx.coroutines.CoroutineScope
@@ -42,31 +45,36 @@ class WithNetworkAndDbJokesRepository(
 
     private var isLoading = false
 
+    private suspend fun loadRemoteJokesFromCache() {
+        withContext(context) {
+            val jokesFromCache = remoteJokeDao.getAllJokes().toJokes()
+            val lastData = flowRemoteData.filterNotNull().first()
+            val ids = lastData.map { it.id }.toSet()
+            val filteredJokes = jokesFromCache.filter { it.id !in ids }
+            if (filteredJokes.isEmpty())
+                throw EmptyCacheException()
+            else
+                flowRemoteData.value = lastData.toMutableList().apply { addAll(filteredJokes) }
+        }
+    }
+
     private suspend fun loadRemoteJokes() {
         withContext(context) {
             if (isLoading)
                 return@withContext
 
             isLoading = true
-            flowRemoteData.value = initRemoteData
             try {
+                remoteJokeDao.deleteOldJokes(getCurrentTime() - MILLISECONDS_IN_DAY)
+
                 val remoteJokes = api.getJokes().jokes.map { it.toJoke() }
                 addJokes(remoteJokes)
+            } catch (t: Throwable) {
+                loadRemoteJokesFromCache()
+                throw t
             } finally {
                 isLoading = false
             }
-        }
-    }
-
-    private fun List<DbLocalJoke>.toJokes(): List<Joke> = this.map { joke ->
-        with(joke) {
-            Joke(
-                category = category,
-                question = question,
-                answer = answer,
-                type = JokeType.Local,
-                id = id
-            )
         }
     }
 
@@ -81,7 +89,10 @@ class WithNetworkAndDbJokesRepository(
     private suspend fun loadInitData() {
         withContext(context) {
             if (flowLocalData.value == null) loadLocalJokes()
-            if (flowRemoteData.value == null) loadRemoteJokes()
+            if (flowRemoteData.value == null) {
+                flowRemoteData.value = initRemoteData
+                loadRemoteJokes()
+            }
         }
     }
 
@@ -121,7 +132,18 @@ class WithNetworkAndDbJokesRepository(
             question = question,
             answer = answer,
             timestamp = getCurrentTime(),
-            id = checkUndefinedId()
+            id = checkUndefinedId(),
+        )
+    }
+
+    private fun Joke.toDbRemoteJoke(): DbRemoteJoke {
+        require(type == JokeType.Remote) { "joke must be remote" }
+        return DbRemoteJoke(
+            category = category,
+            question = question,
+            answer = answer,
+            timestamp = getCurrentTime(),
+            id = checkUndefinedId(),
         )
     }
 
@@ -144,7 +166,11 @@ class WithNetworkAndDbJokesRepository(
         withContext(context) {
             require(joke.type == JokeType.Remote) { "joke must be remote" }
             val lastData = flowRemoteData.filterNotNull().first()
-            flowRemoteData.value = lastData.toMutableList().apply { add(joke) }
+            val ids = lastData.map { it.id }.toSet()
+            if (joke.id !in ids) {
+                flowRemoteData.value = lastData.toMutableList().apply { add(joke) }
+                remoteJokeDao.insertJoke(joke.toDbRemoteJoke())
+            }
         }
     }
 
@@ -155,8 +181,11 @@ class WithNetworkAndDbJokesRepository(
         withContext(context) {
             require(jokes.all { it.type == JokeType.Remote }) { "jokes must be remote" }
             val lastData = flowRemoteData.filterNotNull().first()
+            val ids = lastData.map { it.id }.toSet()
+            val filteredJokes = jokes.filter { it.id !in ids }
             flowRemoteData.value =
-                lastData.toMutableList().apply { addAll(jokes) }
+                lastData.toMutableList().apply { addAll(filteredJokes) }
+            remoteJokeDao.insertJokes(filteredJokes.map { it.toDbRemoteJoke() })
         }
     }
 
