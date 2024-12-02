@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.retry
 import kotlinx.coroutines.launch
 
 class JokesViewModel(private val repository: JokesRepository) :
@@ -55,14 +56,20 @@ class JokesViewModel(private val repository: JokesRepository) :
 
     private fun observableJokes() {
         viewModelScope.launch {
-            repository.getJokes().catch { cause ->
-                errorOccurred = true
-                _errors.emit(cause.message ?: "Load error")
-            }.collect { jokes ->
-                _state.value =
-                    if (jokes.isEmpty()) JokesState.EmptyList
-                    else JokesState.ShowJokes(jokes)
-            }
+            repository.getJokes()
+                .catch { cause ->
+                    errorOccurred = true
+                    _errors.emit(cause.message ?: "Load error")
+                    if (_state.value == JokesState.Loading) throw cause
+                }
+                // If there is a network error on a first load, we need to read a value again to
+                // load local jokes
+                .retry()
+                .collect { jokes ->
+                    _state.value =
+                        if (jokes.isEmpty()) JokesState.EmptyList
+                        else JokesState.ShowJokes(jokes)
+                }
         }
     }
 

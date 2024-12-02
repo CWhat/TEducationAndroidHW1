@@ -48,9 +48,13 @@ class WithNetworkAndDbJokesRepository(
                 return@withContext
 
             isLoading = true
-            val remoteJokes = api.getJokes().jokes.map { it.toJoke() }
-            addJokes(remoteJokes)
-            isLoading = false
+            flowRemoteData.value = initRemoteData
+            try {
+                val remoteJokes = api.getJokes().jokes.map { it.toJoke() }
+                addJokes(remoteJokes)
+            } finally {
+                isLoading = false
+            }
         }
     }
 
@@ -77,10 +81,7 @@ class WithNetworkAndDbJokesRepository(
     private suspend fun loadInitData() {
         withContext(context) {
             if (flowLocalData.value == null) loadLocalJokes()
-            if (flowRemoteData.value == null) {
-                flowRemoteData.value = initRemoteData
-                loadRemoteJokes()
-            }
+            if (flowRemoteData.value == null) loadRemoteJokes()
         }
     }
 
@@ -94,8 +95,8 @@ class WithNetworkAndDbJokesRepository(
     }
 
     override suspend fun getJokes(): Flow<List<Joke>> = flowLocalData.onSubscription {
-        loadInitData()
         delay(delayValue)
+        loadInitData()
     }
         .combine(flowRemoteData) { localList, remoteList ->
             if (localList == null || remoteList == null)
