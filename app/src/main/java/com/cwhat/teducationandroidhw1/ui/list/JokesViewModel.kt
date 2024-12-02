@@ -3,8 +3,6 @@ package com.cwhat.teducationandroidhw1.ui.list
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cwhat.teducationandroidhw1.data.JokesRepository
-import com.cwhat.teducationandroidhw1.data.remote.RemoteApi
-import com.cwhat.teducationandroidhw1.data.remote.toJoke
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
-class JokesViewModel(private val repository: JokesRepository, private val api: RemoteApi) :
+class JokesViewModel(private val repository: JokesRepository) :
     ViewModel() {
 
     private val _errors = MutableSharedFlow<String>(
@@ -45,8 +43,7 @@ class JokesViewModel(private val repository: JokesRepository, private val api: R
 
             _isLoading.value = true
             try {
-                val remoteJokes = api.getJokes().jokes.map { it.toJoke() }
-                repository.addJokes(remoteJokes)
+                repository.loadNextPage()
             } catch (t: Throwable) {
                 errorOccurred = true
                 _errors.emit(t.message ?: "Load error")

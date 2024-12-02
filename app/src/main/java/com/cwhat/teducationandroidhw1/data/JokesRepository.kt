@@ -8,6 +8,8 @@ interface JokesRepository {
 
     suspend fun getJokes(): Flow<List<Joke>>
 
+    suspend fun loadNextPage()
+
     suspend fun addJoke(joke: Joke)
 
     suspend fun addJokes(jokes: List<Joke>) {

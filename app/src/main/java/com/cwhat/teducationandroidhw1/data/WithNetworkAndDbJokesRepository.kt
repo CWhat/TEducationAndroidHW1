@@ -105,6 +105,10 @@ class WithNetworkAndDbJokesRepository(
         }
         .filterNotNull()
 
+    override suspend fun loadNextPage() {
+        loadRemoteJokes()
+    }
+
     private fun getCurrentTime(): Long = Calendar.getInstance().timeInMillis
 
     private fun Joke.checkUndefinedId(): Int = if (id == Joke.UNDEFINED_ID) DB_UNDEFINED_ID else id
