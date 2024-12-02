@@ -15,6 +15,7 @@ navVersion = "2.8.4"
 kotSerializationJsonVer = "1.7.3"
 retrofitVer = "2.11.0"
 okhttpVer = "4.12.0"
+roomVer = "2.6.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -35,6 +36,9 @@ squareup-retrofit = { group = "com.squareup.retrofit2", name = "retrofit", versi
 squareup-converter-serialization = { group = "com.squareup.retrofit2", name = "converter-kotlinx-serialization", version.ref = "retrofitVer" }
 squareup-okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttpVer" }
 squareup-okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttpVer" }
+androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "roomVer" }
+androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "roomVer" }
+androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomVer" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
+    id("com.google.devtools.ksp")
     id("androidx.navigation.safeargs.kotlin")
 }
 
@@ -41,6 +42,7 @@ android {
 }
 
 dependencies {
+    ksp(libs.androidx.room.compiler)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -56,6 +58,8 @@ dependencies {
     implementation(libs.squareup.converter.serialization)
     implementation(libs.squareup.okhttp)
     implementation(libs.squareup.okhttp.logging)
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
