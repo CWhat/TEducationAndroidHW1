@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.cwhat.teducationandroidhw1.R
 import com.cwhat.teducationandroidhw1.data.Joke
-import com.cwhat.teducationandroidhw1.data.di.DI
 import com.cwhat.teducationandroidhw1.databinding.FragmentJokesBinding
 import com.cwhat.teducationandroidhw1.ui.jokesViewModels
 import kotlinx.coroutines.launch
@@ -23,10 +22,7 @@ import kotlinx.coroutines.launch
 class JokesListFragment : Fragment(R.layout.fragment_jokes) {
     private val binding: FragmentJokesBinding by viewBinding(FragmentJokesBinding::bind)
     private val jokesViewModel: JokesViewModel by jokesViewModels {
-        JokesViewModel(
-            it,
-            DI.provideRemoteApi(),
-        )
+        JokesViewModel(it)
     }
 
     private val adapter = JokesAdapter { id, type ->
@@ -98,8 +94,15 @@ class JokesListFragment : Fragment(R.layout.fragment_jokes) {
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                jokesViewModel.errors.collect { message ->
-                    Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+                jokesViewModel.errors.collect { error ->
+                    val toast = when (error) {
+                        is JokesError.ErrorWithString ->
+                            Toast.makeText(requireContext(), error.message, Toast.LENGTH_LONG)
+
+                        is JokesError.ErrorWithId ->
+                            Toast.makeText(requireContext(), error.resId, Toast.LENGTH_LONG)
+                    }
+                    toast.show()
                 }
             }
         }
