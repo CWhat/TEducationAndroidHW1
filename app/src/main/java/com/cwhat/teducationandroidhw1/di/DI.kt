@@ -1,6 +1,8 @@
 package com.cwhat.teducationandroidhw1.di
 
 import com.cwhat.teducationandroidhw1.data.JokesRepository
+import com.cwhat.teducationandroidhw1.data.LocalJokesRepository
+import com.cwhat.teducationandroidhw1.data.RemoteJokesRepository
 import com.cwhat.teducationandroidhw1.data.WithNetworkAndDbJokesRepository
 import com.cwhat.teducationandroidhw1.data.db.JokesDatabase
 import com.cwhat.teducationandroidhw1.data.db.LocalJokeDao
@@ -40,8 +42,16 @@ object DI {
         RemoteApiWithContext(baseApi, Dispatchers.IO)
     }
 
+    private val remoteJokesRepository: RemoteJokesRepository by lazy {
+        RemoteJokesRepository(remoteApi, remoteJokeDao)
+    }
+
+    private val localJokesRepository: LocalJokesRepository by lazy {
+        LocalJokesRepository(localJokeDao)
+    }
+
     private val repository: JokesRepository by lazy {
-        WithNetworkAndDbJokesRepository(remoteApi, localJokeDao, remoteJokeDao)
+        WithNetworkAndDbJokesRepository(remoteJokesRepository, localJokesRepository)
     }
 
     lateinit var db: JokesDatabase
