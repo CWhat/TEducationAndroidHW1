@@ -1,4 +1,4 @@
-package com.cwhat.teducationandroidhw1.data.di
+package com.cwhat.teducationandroidhw1.di
 
 import com.cwhat.teducationandroidhw1.data.JokesRepository
 import com.cwhat.teducationandroidhw1.data.WithNetworkAndDbJokesRepository
@@ -49,8 +49,6 @@ object DI {
     private val localJokeDao: LocalJokeDao by lazy { db.localJokeDao() }
 
     private val remoteJokeDao: RemoteJokeDao by lazy { db.remoteJokeDao() }
-
-    fun provideRemoteApi(): RemoteApi = remoteApi
 
     fun provideJokesRepository(): JokesRepository = repository
 

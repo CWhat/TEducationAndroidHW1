@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.room.Room
 import com.cwhat.teducationandroidhw1.data.db.JOKES_DB
 import com.cwhat.teducationandroidhw1.data.db.JokesDatabase
-import com.cwhat.teducationandroidhw1.data.di.DI
+import com.cwhat.teducationandroidhw1.di.DI
 
 class App : Application() {
 

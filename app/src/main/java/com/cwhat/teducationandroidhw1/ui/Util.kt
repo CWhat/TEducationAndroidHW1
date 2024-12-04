@@ -9,7 +9,7 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.cwhat.teducationandroidhw1.R
 import com.cwhat.teducationandroidhw1.data.JokeType
 import com.cwhat.teducationandroidhw1.data.JokesRepository
-import com.cwhat.teducationandroidhw1.data.di.DI
+import com.cwhat.teducationandroidhw1.di.DI
 
 inline fun <reified VM : ViewModel> Fragment.jokesViewModels(
     crossinline viewModelCreator: (JokesRepository) -> VM,
