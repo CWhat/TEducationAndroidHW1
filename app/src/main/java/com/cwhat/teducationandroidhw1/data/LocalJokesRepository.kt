@@ -1,6 +1,7 @@
 package com.cwhat.teducationandroidhw1.data
 
 import com.cwhat.teducationandroidhw1.data.db.LocalJokeDao
+import com.cwhat.teducationandroidhw1.data.db.toJoke
 import com.cwhat.teducationandroidhw1.data.db.toJokes
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -8,7 +9,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onSubscription
 import kotlinx.coroutines.launch
@@ -42,11 +42,7 @@ class LocalJokesRepository(
         }
     }
 
-    suspend fun getJokeById(id: Int): Joke {
-        val data = flowLocalData.filterNotNull().first()
-        return data.find { it.id == id }
-            ?: error("Element with id $id not found")
-    }
+    suspend fun getJokeById(id: Int): Joke = localJokeDao.getJokeById(id).toJoke()
 
     suspend fun addLocalJoke(joke: Joke) {
         require(joke.type == JokeType.Local) { "joke must be local" }

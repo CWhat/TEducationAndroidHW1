@@ -21,14 +21,12 @@ data class DbLocalJoke(
     val id: Int = 0,
 )
 
-fun List<DbLocalJoke>.toJokes(): List<Joke> = this.map { joke ->
-    with(joke) {
-        Joke(
-            category = category,
-            question = question,
-            answer = answer,
-            type = JokeType.Local,
-            id = id
-        )
-    }
-}
+fun DbLocalJoke.toJoke() = Joke(
+    category = category,
+    question = question,
+    answer = answer,
+    type = JokeType.Local,
+    id = id
+)
+
+fun List<DbLocalJoke>.toJokes(): List<Joke> = this.map { it.toJoke() }
