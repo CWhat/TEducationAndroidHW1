@@ -80,19 +80,7 @@ class RemoteJokesRepository(
         }
     }
 
-    suspend fun addRemoteJoke(joke: Joke) {
-        withContext(context) {
-            require(joke.type == JokeType.Remote) { "joke must be remote" }
-            val lastData = flowRemoteData.filterNotNull().first()
-            val ids = lastData.map { it.id }.toSet()
-            if (joke.id !in ids) {
-                flowRemoteData.value = lastData.toMutableList().apply { add(joke) }
-                remoteJokeDao.insertJoke(joke.toDbRemoteJoke())
-            }
-        }
-    }
-
-    suspend fun addRemoteJokes(jokes: List<Joke>) {
+    private suspend fun addRemoteJokes(jokes: List<Joke>) {
         if (jokes.isEmpty())
             return
 

@@ -1,17 +1,12 @@
 package com.cwhat.teducationandroidhw1.data
 
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.withContext
-import kotlin.coroutines.CoroutineContext
 
 class WithNetworkAndDbJokesRepository(
     private val remoteRepository: RemoteJokesRepository,
     private val localRepository: LocalJokesRepository,
 ) : JokesRepository {
-
-    private val context: CoroutineContext = Dispatchers.IO
 
     override suspend fun getJokeById(id: Int, type: JokeType): Joke {
         return when (type) {
@@ -30,26 +25,16 @@ class WithNetworkAndDbJokesRepository(
     }
 
     override suspend fun addJoke(joke: Joke) {
-        withContext(context) {
-            when (joke.type) {
-                JokeType.Local -> localRepository.addLocalJoke(joke)
-                JokeType.Remote -> remoteRepository.addRemoteJoke(joke)
-            }
-        }
+        require(joke.type == JokeType.Local) { "Only local joke can be added" }
+        localRepository.addLocalJoke(joke)
     }
 
     override suspend fun addJokes(jokes: List<Joke>) {
-        withContext(context) {
-            if (jokes.isEmpty())
-                return@withContext
+        if (jokes.isEmpty())
+            return
 
-            if (jokes.all { it.type == JokeType.Remote })
-                remoteRepository.addRemoteJokes(jokes)
-            else if (jokes.all { it.type == JokeType.Local })
-                localRepository.addLocalJokes(jokes)
-            else
-                super.addJokes(jokes)
-        }
+        require(jokes.all { it.type == JokeType.Local }) { "Only local jokes can be added" }
+        localRepository.addLocalJokes(jokes)
     }
 
 }
