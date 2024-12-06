@@ -1,9 +1,11 @@
-package com.cwhat.teducationandroidhw1.data
+package com.cwhat.teducationandroidhw1.data.repository
 
 import android.icu.util.Calendar
 import com.cwhat.teducationandroidhw1.data.db.DB_UNDEFINED_ID
 import com.cwhat.teducationandroidhw1.data.db.DbLocalJoke
 import com.cwhat.teducationandroidhw1.data.db.DbRemoteJoke
+import com.cwhat.teducationandroidhw1.domain.entity.Joke
+import com.cwhat.teducationandroidhw1.domain.entity.JokeType
 
 fun getCurrentTime(): Long = Calendar.getInstance().timeInMillis
 

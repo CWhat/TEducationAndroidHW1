@@ -1,6 +1,6 @@
 package com.cwhat.teducationandroidhw1.ui.list
 
-import com.cwhat.teducationandroidhw1.data.Joke
+import com.cwhat.teducationandroidhw1.domain.entity.Joke
 
 sealed class JokesState {
 

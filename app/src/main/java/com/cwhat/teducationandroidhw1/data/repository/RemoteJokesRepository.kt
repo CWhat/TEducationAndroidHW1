@@ -1,10 +1,13 @@
-package com.cwhat.teducationandroidhw1.data
+package com.cwhat.teducationandroidhw1.data.repository
 
+import com.cwhat.teducationandroidhw1.domain.entity.EmptyCacheException
 import com.cwhat.teducationandroidhw1.data.db.MILLISECONDS_IN_DAY
 import com.cwhat.teducationandroidhw1.data.db.RemoteJokeDao
 import com.cwhat.teducationandroidhw1.data.db.toJokes
 import com.cwhat.teducationandroidhw1.data.remote.RemoteApi
 import com.cwhat.teducationandroidhw1.data.remote.toJoke
+import com.cwhat.teducationandroidhw1.domain.entity.Joke
+import com.cwhat.teducationandroidhw1.domain.entity.JokeType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow

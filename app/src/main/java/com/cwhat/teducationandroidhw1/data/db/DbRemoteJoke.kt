@@ -3,8 +3,8 @@ package com.cwhat.teducationandroidhw1.data.db
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.cwhat.teducationandroidhw1.data.Joke
-import com.cwhat.teducationandroidhw1.data.JokeType
+import com.cwhat.teducationandroidhw1.domain.entity.Joke
+import com.cwhat.teducationandroidhw1.domain.entity.JokeType
 
 @Entity(tableName = REMOTE_JOKES_TABLE)
 data class DbRemoteJoke(

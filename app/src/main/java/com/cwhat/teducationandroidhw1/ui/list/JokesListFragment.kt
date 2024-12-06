@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.cwhat.teducationandroidhw1.R
-import com.cwhat.teducationandroidhw1.data.Joke
+import com.cwhat.teducationandroidhw1.domain.entity.Joke
 import com.cwhat.teducationandroidhw1.databinding.FragmentJokesBinding
 import com.cwhat.teducationandroidhw1.di.jokesViewModels
 import com.cwhat.teducationandroidhw1.ui.list.recyclerview.JokesAdapter

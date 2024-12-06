@@ -1,5 +1,8 @@
-package com.cwhat.teducationandroidhw1.data
+package com.cwhat.teducationandroidhw1.data.repository
 
+import com.cwhat.teducationandroidhw1.domain.entity.Joke
+import com.cwhat.teducationandroidhw1.domain.entity.JokeType
+import com.cwhat.teducationandroidhw1.domain.repository.JokesRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 

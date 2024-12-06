@@ -10,7 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.cwhat.teducationandroidhw1.R
-import com.cwhat.teducationandroidhw1.data.Joke
+import com.cwhat.teducationandroidhw1.domain.entity.Joke
 import com.cwhat.teducationandroidhw1.databinding.FragmentFullJokeBinding
 import com.cwhat.teducationandroidhw1.di.fullJokeViewModels
 import com.cwhat.teducationandroidhw1.ui.typeToString

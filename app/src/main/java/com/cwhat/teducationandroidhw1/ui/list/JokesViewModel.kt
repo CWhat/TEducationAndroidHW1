@@ -3,7 +3,7 @@ package com.cwhat.teducationandroidhw1.ui.list
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cwhat.teducationandroidhw1.R
-import com.cwhat.teducationandroidhw1.data.EmptyCacheException
+import com.cwhat.teducationandroidhw1.domain.entity.EmptyCacheException
 import com.cwhat.teducationandroidhw1.domain.use_cases.ShowListUseCase
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow

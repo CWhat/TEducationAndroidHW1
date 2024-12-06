@@ -5,10 +5,10 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.cwhat.teducationandroidhw1.data.JokesRepository
-import com.cwhat.teducationandroidhw1.data.LocalJokesRepository
-import com.cwhat.teducationandroidhw1.data.RemoteJokesRepository
-import com.cwhat.teducationandroidhw1.data.WithNetworkAndDbJokesRepository
+import com.cwhat.teducationandroidhw1.domain.repository.JokesRepository
+import com.cwhat.teducationandroidhw1.data.repository.LocalJokesRepository
+import com.cwhat.teducationandroidhw1.data.repository.RemoteJokesRepository
+import com.cwhat.teducationandroidhw1.data.repository.WithNetworkAndDbJokesRepository
 import com.cwhat.teducationandroidhw1.data.db.JokesDatabase
 import com.cwhat.teducationandroidhw1.data.db.LocalJokeDao
 import com.cwhat.teducationandroidhw1.data.db.RemoteJokeDao

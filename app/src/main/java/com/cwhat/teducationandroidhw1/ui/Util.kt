@@ -2,7 +2,7 @@ package com.cwhat.teducationandroidhw1.ui
 
 import android.content.Context
 import com.cwhat.teducationandroidhw1.R
-import com.cwhat.teducationandroidhw1.data.JokeType
+import com.cwhat.teducationandroidhw1.domain.entity.JokeType
 
 fun Context.typeToString(type: JokeType): String =
     getString(

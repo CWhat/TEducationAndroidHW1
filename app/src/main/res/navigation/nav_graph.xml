@@ -28,7 +28,7 @@
             app:argType="integer" />
         <argument
             android:name="joke_type"
-            app:argType=".data.JokeType" />
+            app:argType=".domain.entity.JokeType" />
     </fragment>
 
     <fragment

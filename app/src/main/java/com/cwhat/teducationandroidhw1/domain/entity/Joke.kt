@@ -1,4 +1,4 @@
-package com.cwhat.teducationandroidhw1.data
+package com.cwhat.teducationandroidhw1.domain.entity
 
 data class Joke(
     val category: String,

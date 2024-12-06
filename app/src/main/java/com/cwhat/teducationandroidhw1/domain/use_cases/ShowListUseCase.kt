@@ -1,7 +1,7 @@
 package com.cwhat.teducationandroidhw1.domain.use_cases
 
-import com.cwhat.teducationandroidhw1.data.Joke
-import com.cwhat.teducationandroidhw1.data.JokesRepository
+import com.cwhat.teducationandroidhw1.domain.entity.Joke
+import com.cwhat.teducationandroidhw1.domain.repository.JokesRepository
 import kotlinx.coroutines.flow.Flow
 
 class ShowListUseCase(

@@ -1,7 +1,7 @@
 package com.cwhat.teducationandroidhw1.ui.list.recyclerview
 
 import androidx.recyclerview.widget.DiffUtil
-import com.cwhat.teducationandroidhw1.data.Joke
+import com.cwhat.teducationandroidhw1.domain.entity.Joke
 
 class JokesDiffUtilCallback(
     private val oldData: List<Joke>,

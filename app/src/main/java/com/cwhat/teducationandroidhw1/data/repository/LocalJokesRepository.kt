@@ -1,8 +1,10 @@
-package com.cwhat.teducationandroidhw1.data
+package com.cwhat.teducationandroidhw1.data.repository
 
 import com.cwhat.teducationandroidhw1.data.db.LocalJokeDao
 import com.cwhat.teducationandroidhw1.data.db.toJoke
 import com.cwhat.teducationandroidhw1.data.db.toJokes
+import com.cwhat.teducationandroidhw1.domain.entity.Joke
+import com.cwhat.teducationandroidhw1.domain.entity.JokeType
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

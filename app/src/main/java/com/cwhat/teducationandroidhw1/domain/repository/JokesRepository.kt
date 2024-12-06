@@ -1,5 +1,7 @@
-package com.cwhat.teducationandroidhw1.data
+package com.cwhat.teducationandroidhw1.domain.repository
 
+import com.cwhat.teducationandroidhw1.domain.entity.Joke
+import com.cwhat.teducationandroidhw1.domain.entity.JokeType
 import kotlinx.coroutines.flow.Flow
 
 interface JokesRepository {
