@@ -5,8 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.cwhat.teducationandroidhw1.R
 import com.cwhat.teducationandroidhw1.domain.entity.EmptyCacheException
 import com.cwhat.teducationandroidhw1.domain.use_cases.ShowListUseCase
-import kotlinx.coroutines.channels.BufferOverflow
-import kotlinx.coroutines.flow.MutableSharedFlow
+import com.cwhat.teducationandroidhw1.ui.mutableEventFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,11 +16,7 @@ import kotlinx.coroutines.launch
 class JokesViewModel(private val showListUseCase: ShowListUseCase) :
     ViewModel() {
 
-    private val _errors = MutableSharedFlow<JokesError>(
-        replay = 0,
-        extraBufferCapacity = 1,
-        onBufferOverflow = BufferOverflow.DROP_LATEST,
-    )
+    private val _errors = mutableEventFlow<JokesError>()
     val errors: SharedFlow<JokesError> = _errors
 
     // So that in case of a network error there is no situation with constant attempts to download

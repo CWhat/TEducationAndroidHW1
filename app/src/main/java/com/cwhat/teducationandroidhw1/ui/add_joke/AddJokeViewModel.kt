@@ -4,18 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cwhat.teducationandroidhw1.R
 import com.cwhat.teducationandroidhw1.domain.use_cases.AddUserJokeUseCase
-import kotlinx.coroutines.channels.BufferOverflow
-import kotlinx.coroutines.flow.MutableSharedFlow
+import com.cwhat.teducationandroidhw1.ui.mutableEventFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 
 class AddJokeViewModel(private val addUserJokeUseCase: AddUserJokeUseCase) : ViewModel() {
 
-    private val _events = MutableSharedFlow<AddJokeEvent>(
-        replay = 0,
-        extraBufferCapacity = 1,
-        onBufferOverflow = BufferOverflow.DROP_LATEST,
-    )
+    private val _events = mutableEventFlow<AddJokeEvent>()
     val events: SharedFlow<AddJokeEvent> = _events
 
     fun addJoke(category: String, question: String, answer: String) {
