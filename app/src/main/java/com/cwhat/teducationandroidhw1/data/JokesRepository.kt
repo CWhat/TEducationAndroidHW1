@@ -6,7 +6,7 @@ interface JokesRepository {
 
     suspend fun getJokeById(id: Int, type: JokeType): Joke
 
-    suspend fun getJokes(): Flow<List<Joke>>
+    fun getJokes(): Flow<List<Joke>>
 
     suspend fun loadNextPage()
 

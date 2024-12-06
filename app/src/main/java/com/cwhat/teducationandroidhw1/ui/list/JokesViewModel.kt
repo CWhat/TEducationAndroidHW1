@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cwhat.teducationandroidhw1.R
 import com.cwhat.teducationandroidhw1.data.EmptyCacheException
-import com.cwhat.teducationandroidhw1.data.JokesRepository
+import com.cwhat.teducationandroidhw1.domain.use_cases.ShowListUseCase
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.retry
 import kotlinx.coroutines.launch
 
-class JokesViewModel(private val repository: JokesRepository) :
+class JokesViewModel(private val showListUseCase: ShowListUseCase) :
     ViewModel() {
 
     private val _errors = MutableSharedFlow<JokesError>(
@@ -46,7 +46,7 @@ class JokesViewModel(private val repository: JokesRepository) :
 
             _isLoading.value = true
             try {
-                repository.loadNextPage()
+                showListUseCase.loadNextPage()
             } catch (t: Throwable) {
                 catchException(t)
             } finally {
@@ -68,7 +68,7 @@ class JokesViewModel(private val repository: JokesRepository) :
 
     private fun observableJokes() {
         viewModelScope.launch {
-            repository.getJokes()
+            showListUseCase.getJokes()
                 .catch { cause ->
                     catchException(cause)
                     if (_state.value == JokesState.Loading) throw cause

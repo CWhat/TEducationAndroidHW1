@@ -1,5 +1,10 @@
 package com.cwhat.teducationandroidhw1.di
 
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import com.cwhat.teducationandroidhw1.data.JokesRepository
 import com.cwhat.teducationandroidhw1.data.LocalJokesRepository
 import com.cwhat.teducationandroidhw1.data.RemoteJokesRepository
@@ -9,6 +14,12 @@ import com.cwhat.teducationandroidhw1.data.db.LocalJokeDao
 import com.cwhat.teducationandroidhw1.data.db.RemoteJokeDao
 import com.cwhat.teducationandroidhw1.data.remote.RemoteApi
 import com.cwhat.teducationandroidhw1.data.remote.RemoteApiWithContext
+import com.cwhat.teducationandroidhw1.domain.use_cases.AddUserJokeUseCase
+import com.cwhat.teducationandroidhw1.domain.use_cases.GetJokeByIdUseCase
+import com.cwhat.teducationandroidhw1.domain.use_cases.ShowListUseCase
+import com.cwhat.teducationandroidhw1.ui.add_joke.AddJokeViewModel
+import com.cwhat.teducationandroidhw1.ui.full_view.FullJokeViewModel
+import com.cwhat.teducationandroidhw1.ui.list.JokesViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -54,12 +65,53 @@ object DI {
         WithNetworkAndDbJokesRepository(remoteJokesRepository, localJokesRepository)
     }
 
+    private val addUserJokeUseCase: AddUserJokeUseCase by lazy {
+        AddUserJokeUseCase(repository)
+    }
+
+    private val getJokeByIdUseCase: GetJokeByIdUseCase by lazy {
+        GetJokeByIdUseCase(repository)
+    }
+
+    private val showListUseCase: ShowListUseCase by lazy {
+        ShowListUseCase(repository)
+    }
+
     lateinit var db: JokesDatabase
 
     private val localJokeDao: LocalJokeDao by lazy { db.localJokeDao() }
 
     private val remoteJokeDao: RemoteJokeDao by lazy { db.remoteJokeDao() }
 
-    fun provideJokesRepository(): JokesRepository = repository
+    fun provideAddUserJokeUseCase() = addUserJokeUseCase
 
+    fun provideGetJokeByIdUseCase() = getJokeByIdUseCase
+
+    fun provideShowListUseCase() = showListUseCase
+
+}
+
+private inline fun <reified VM : ViewModel> Fragment.customViewModels(
+    crossinline viewModelCreator: () -> VM,
+) = viewModels<VM> {
+    viewModelFactory {
+        initializer {
+            viewModelCreator()
+        }
+    }
+}
+
+fun Fragment.addJokeViewModels(): Lazy<AddJokeViewModel> = customViewModels {
+    val useCase = DI.provideAddUserJokeUseCase()
+    AddJokeViewModel(useCase)
+}
+
+fun Fragment.fullJokeViewModels(): Lazy<FullJokeViewModel> = customViewModels {
+    val useCase = DI.provideGetJokeByIdUseCase()
+    FullJokeViewModel(useCase)
+}
+
+fun Fragment.jokesViewModels(): Lazy<JokesViewModel> = customViewModels {
+    val useCase = DI.provideShowListUseCase()
+    JokesViewModel(useCase)
 }

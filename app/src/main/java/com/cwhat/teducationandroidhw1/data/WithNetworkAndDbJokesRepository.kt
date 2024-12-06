@@ -15,7 +15,7 @@ class WithNetworkAndDbJokesRepository(
         }
     }
 
-    override suspend fun getJokes(): Flow<List<Joke>> =
+    override fun getJokes(): Flow<List<Joke>> =
         combine(localRepository.getJokes(), remoteRepository.getJokes()) { localList, remoteList ->
             localList + remoteList
         }

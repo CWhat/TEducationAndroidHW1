@@ -3,15 +3,13 @@ package com.cwhat.teducationandroidhw1.ui.add_joke
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cwhat.teducationandroidhw1.R
-import com.cwhat.teducationandroidhw1.data.Joke
-import com.cwhat.teducationandroidhw1.data.JokeType
-import com.cwhat.teducationandroidhw1.data.JokesRepository
+import com.cwhat.teducationandroidhw1.domain.use_cases.AddUserJokeUseCase
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 
-class AddJokeViewModel(private val jokesRepository: JokesRepository) : ViewModel() {
+class AddJokeViewModel(private val addUserJokeUseCase: AddUserJokeUseCase) : ViewModel() {
 
     private val _events = MutableSharedFlow<AddJokeEvent>(
         replay = 0,
@@ -28,9 +26,8 @@ class AddJokeViewModel(private val jokesRepository: JokesRepository) : ViewModel
             return
         }
 
-        val joke = Joke(category, question, answer, JokeType.Local)
         viewModelScope.launch {
-            jokesRepository.addJoke(joke)
+            addUserJokeUseCase(category = category, question = question, answer = answer)
             _events.emit(AddJokeEvent.NavigateToBack)
         }
     }

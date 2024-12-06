@@ -12,12 +12,12 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.cwhat.teducationandroidhw1.R
 import com.cwhat.teducationandroidhw1.data.Joke
 import com.cwhat.teducationandroidhw1.databinding.FragmentFullJokeBinding
-import com.cwhat.teducationandroidhw1.ui.jokesViewModels
+import com.cwhat.teducationandroidhw1.di.fullJokeViewModels
 import com.cwhat.teducationandroidhw1.ui.typeToString
 
 class FullJokeFragment : Fragment(R.layout.fragment_full_joke) {
     private val binding: FragmentFullJokeBinding by viewBinding(FragmentFullJokeBinding::bind)
-    private val fullJokeViewModel: FullJokeViewModel by jokesViewModels { FullJokeViewModel(it) }
+    private val fullJokeViewModel: FullJokeViewModel by fullJokeViewModels()
     private val args: FullJokeFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

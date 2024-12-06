@@ -12,12 +12,12 @@ import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.cwhat.teducationandroidhw1.R
 import com.cwhat.teducationandroidhw1.databinding.FragmentAddJokeBinding
-import com.cwhat.teducationandroidhw1.ui.jokesViewModels
+import com.cwhat.teducationandroidhw1.di.addJokeViewModels
 import kotlinx.coroutines.launch
 
 class AddJokeFragment : Fragment(R.layout.fragment_add_joke) {
     private val binding: FragmentAddJokeBinding by viewBinding(FragmentAddJokeBinding::bind)
-    private val viewModel: AddJokeViewModel by jokesViewModels { AddJokeViewModel(it) }
+    private val viewModel: AddJokeViewModel by addJokeViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
