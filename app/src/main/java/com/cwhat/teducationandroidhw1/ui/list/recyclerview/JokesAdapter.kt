@@ -1,4 +1,4 @@
-package com.cwhat.teducationandroidhw1.ui.list
+package com.cwhat.teducationandroidhw1.ui.list.recyclerview
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

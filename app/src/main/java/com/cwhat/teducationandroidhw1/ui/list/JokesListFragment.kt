@@ -17,6 +17,7 @@ import com.cwhat.teducationandroidhw1.R
 import com.cwhat.teducationandroidhw1.data.Joke
 import com.cwhat.teducationandroidhw1.databinding.FragmentJokesBinding
 import com.cwhat.teducationandroidhw1.di.jokesViewModels
+import com.cwhat.teducationandroidhw1.ui.list.recyclerview.JokesAdapter
 import kotlinx.coroutines.launch
 
 class JokesListFragment : Fragment(R.layout.fragment_jokes) {
