@@ -3,8 +3,8 @@ package com.cwhat.teducationandroidhw1.data.db
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.cwhat.teducationandroidhw1.data.Joke
-import com.cwhat.teducationandroidhw1.data.JokeType
+import com.cwhat.teducationandroidhw1.domain.entity.Joke
+import com.cwhat.teducationandroidhw1.domain.entity.JokeType
 
 @Entity(tableName = LOCAL_JOKES_TABLE)
 data class DbLocalJoke(
@@ -21,14 +21,12 @@ data class DbLocalJoke(
     val id: Int = 0,
 )
 
-fun List<DbLocalJoke>.toJokes(): List<Joke> = this.map { joke ->
-    with(joke) {
-        Joke(
-            category = category,
-            question = question,
-            answer = answer,
-            type = JokeType.Local,
-            id = id
-        )
-    }
-}
+fun DbLocalJoke.toJoke() = Joke(
+    category = category,
+    question = question,
+    answer = answer,
+    type = JokeType.Local,
+    id = id
+)
+
+fun List<DbLocalJoke>.toJokes(): List<Joke> = this.map { it.toJoke() }

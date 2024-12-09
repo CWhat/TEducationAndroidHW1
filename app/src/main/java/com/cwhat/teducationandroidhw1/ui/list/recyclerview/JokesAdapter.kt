@@ -1,12 +1,12 @@
-package com.cwhat.teducationandroidhw1.ui.list
+package com.cwhat.teducationandroidhw1.ui.list.recyclerview
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.cwhat.teducationandroidhw1.R
-import com.cwhat.teducationandroidhw1.data.Joke
-import com.cwhat.teducationandroidhw1.data.JokeType
+import com.cwhat.teducationandroidhw1.domain.entity.Joke
+import com.cwhat.teducationandroidhw1.domain.entity.JokeType
 import com.cwhat.teducationandroidhw1.databinding.JokeItemBinding
 import com.cwhat.teducationandroidhw1.databinding.LoadingItemBinding
 

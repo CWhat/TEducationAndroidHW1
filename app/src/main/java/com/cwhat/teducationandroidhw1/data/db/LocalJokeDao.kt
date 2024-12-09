@@ -17,4 +17,7 @@ interface LocalJokeDao {
     @Insert
     suspend fun insertJokes(jokes: List<DbLocalJoke>)
 
+    @Query("SELECT * FROM $LOCAL_JOKES_TABLE WHERE id=:id")
+    suspend fun getJokeById(id: Int): DbLocalJoke
+
 }

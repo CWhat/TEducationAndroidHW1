@@ -1,7 +1,7 @@
-package com.cwhat.teducationandroidhw1.ui.list
+package com.cwhat.teducationandroidhw1.ui.list.recyclerview
 
 import androidx.recyclerview.widget.RecyclerView
-import com.cwhat.teducationandroidhw1.data.Joke
+import com.cwhat.teducationandroidhw1.domain.entity.Joke
 import com.cwhat.teducationandroidhw1.databinding.JokeItemBinding
 import com.cwhat.teducationandroidhw1.ui.typeToString
 

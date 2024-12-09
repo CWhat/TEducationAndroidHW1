@@ -1,7 +1,7 @@
 package com.cwhat.teducationandroidhw1.data.remote
 
-import com.cwhat.teducationandroidhw1.data.Joke
-import com.cwhat.teducationandroidhw1.data.JokeType
+import com.cwhat.teducationandroidhw1.domain.entity.Joke
+import com.cwhat.teducationandroidhw1.domain.entity.JokeType
 import kotlinx.serialization.Serializable
 
 // For two-part jokes
