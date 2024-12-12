@@ -16,6 +16,7 @@ kotSerializationJsonVer = "1.7.3"
 retrofitVer = "2.11.0"
 okhttpVer = "4.12.0"
 roomVer = "2.6.1"
+daggerVer = "2.53"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -39,6 +40,8 @@ squareup-okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-inte
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "roomVer" }
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "roomVer" }
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomVer" }
+google-dagger = { group = "com.google.dagger", name = "dagger", version.ref = "daggerVer" }
+google-daggercompiler = { group = "com.google.dagger", name = "dagger-compiler", version.ref = "daggerVer" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
