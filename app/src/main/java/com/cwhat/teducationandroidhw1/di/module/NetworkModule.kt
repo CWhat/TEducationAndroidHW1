@@ -17,11 +17,8 @@ import retrofit2.converter.kotlinx.serialization.asConverterFactory
 class NetworkModule {
 
     @Provides
-    fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor {
-        val logging = HttpLoggingInterceptor()
-        logging.setLevel(HttpLoggingInterceptor.Level.BASIC)
-        return logging
-    }
+    fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor =
+        HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC)
 
     @Provides
     fun provideOkHttpClient(logging: HttpLoggingInterceptor): OkHttpClient =
@@ -33,19 +30,19 @@ class NetworkModule {
     fun provideNetworkDispatcher(): CoroutineDispatcher = Dispatchers.IO
 
     @Provides
-    fun provideRemoteApi(client: OkHttpClient, dispatcher: CoroutineDispatcher): RemoteApi {
-        val retrofit = Retrofit.Builder()
-            .baseUrl(RemoteApi.BASE_URL)
-            .client(client)
-            .addConverterFactory(
-                Json.asConverterFactory(
-                    "application/json; charset=UTF8".toMediaType()
-                )
+    fun provideRetrofit(client: OkHttpClient): Retrofit = Retrofit.Builder()
+        .baseUrl(RemoteApi.BASE_URL)
+        .client(client)
+        .addConverterFactory(
+            Json.asConverterFactory(
+                "application/json; charset=UTF8".toMediaType()
             )
-            .build()
+        )
+        .build()
 
+    @Provides
+    fun provideRemoteApi(retrofit: Retrofit, dispatcher: CoroutineDispatcher): RemoteApi {
         val baseApi = retrofit.create(RemoteApi::class.java)
-
         return RemoteApiWithContext(baseApi, dispatcher)
     }
 
