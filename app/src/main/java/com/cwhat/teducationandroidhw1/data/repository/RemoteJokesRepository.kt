@@ -16,10 +16,11 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.onSubscription
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 import kotlin.time.Duration.Companion.seconds
 
-class RemoteJokesRepository(
+class RemoteJokesRepository @Inject constructor(
     private val api: RemoteApi,
     private val remoteJokeDao: RemoteJokeDao,
 ) {

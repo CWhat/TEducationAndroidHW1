@@ -9,9 +9,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
+import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 
-class LocalJokesRepository(
+class LocalJokesRepository @Inject constructor(
     private val localJokeDao: LocalJokeDao,
 ) {
 

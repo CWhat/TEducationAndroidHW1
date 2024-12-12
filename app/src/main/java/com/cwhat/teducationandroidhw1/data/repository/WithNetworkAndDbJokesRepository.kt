@@ -5,8 +5,9 @@ import com.cwhat.teducationandroidhw1.domain.entity.JokeType
 import com.cwhat.teducationandroidhw1.domain.repository.JokesRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import javax.inject.Inject
 
-class WithNetworkAndDbJokesRepository(
+class WithNetworkAndDbJokesRepository @Inject constructor(
     private val remoteRepository: RemoteJokesRepository,
     private val localRepository: LocalJokesRepository,
 ) : JokesRepository {
