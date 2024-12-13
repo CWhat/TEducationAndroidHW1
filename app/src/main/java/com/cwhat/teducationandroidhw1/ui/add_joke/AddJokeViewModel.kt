@@ -7,8 +7,10 @@ import com.cwhat.teducationandroidhw1.domain.use_cases.AddUserJokeUseCase
 import com.cwhat.teducationandroidhw1.ui.mutableEventFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class AddJokeViewModel(private val addUserJokeUseCase: AddUserJokeUseCase) : ViewModel() {
+class AddJokeViewModel @Inject constructor(private val addUserJokeUseCase: AddUserJokeUseCase) :
+    ViewModel() {
 
     private val _events = mutableEventFlow<AddJokeEvent>()
     val events: SharedFlow<AddJokeEvent> = _events

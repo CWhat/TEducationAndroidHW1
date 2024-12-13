@@ -1,27 +1,40 @@
 package com.cwhat.teducationandroidhw1.ui.full_view
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.cwhat.teducationandroidhw1.App
 import com.cwhat.teducationandroidhw1.R
 import com.cwhat.teducationandroidhw1.databinding.FragmentFullJokeBinding
-import com.cwhat.teducationandroidhw1.di.fullJokeViewModels
 import com.cwhat.teducationandroidhw1.domain.entity.Joke
+import com.cwhat.teducationandroidhw1.ui.ViewModelFactory
 import com.cwhat.teducationandroidhw1.ui.typeToString
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class FullJokeFragment : Fragment(R.layout.fragment_full_joke) {
     private val binding: FragmentFullJokeBinding by viewBinding(FragmentFullJokeBinding::bind)
-    private val fullJokeViewModel: FullJokeViewModel by fullJokeViewModels()
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+    private val fullJokeViewModel: FullJokeViewModel by viewModels { viewModelFactory }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (requireActivity().applicationContext as App).appComponent.inject(this)
+    }
+
     private val args: FullJokeFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -66,7 +79,6 @@ class FullJokeFragment : Fragment(R.layout.fragment_full_joke) {
             binding.category.text = category
             binding.question.text = question
             binding.answer.text = answer
-            context
             binding.type.text = requireContext().typeToString(type)
         }
     }

@@ -3,8 +3,9 @@ package com.cwhat.teducationandroidhw1.domain.use_cases
 import com.cwhat.teducationandroidhw1.domain.entity.Joke
 import com.cwhat.teducationandroidhw1.domain.entity.JokeType
 import com.cwhat.teducationandroidhw1.domain.repository.JokesRepository
+import javax.inject.Inject
 
-class AddUserJokeUseCase(
+class AddUserJokeUseCase @Inject constructor(
     private val jokesRepository: JokesRepository,
 ) {
 
