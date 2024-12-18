@@ -8,11 +8,11 @@ plugins {
 }
 
 android {
-    namespace = "com.cwhat.teducationandroidhw1"
+    namespace = "com.cwhat.jokes"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.cwhat.teducationandroidhw1"
+        applicationId = "com.cwhat.jokes"
         minSdk = 24
         targetSdk = 35
         versionCode = 1
