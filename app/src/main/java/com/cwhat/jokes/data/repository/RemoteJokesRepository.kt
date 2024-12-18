@@ -1,15 +1,14 @@
 package com.cwhat.jokes.data.repository
 
-import com.cwhat.jokes.domain.entity.EmptyCacheException
 import com.cwhat.jokes.data.db.MILLISECONDS_IN_DAY
 import com.cwhat.jokes.data.db.RemoteJokeDao
 import com.cwhat.jokes.data.db.toJokes
 import com.cwhat.jokes.data.remote.RemoteApi
 import com.cwhat.jokes.data.remote.toJoke
+import com.cwhat.jokes.domain.entity.EmptyCacheException
 import com.cwhat.jokes.domain.entity.Joke
 import com.cwhat.jokes.domain.entity.JokeType
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filterNotNull
@@ -18,7 +17,6 @@ import kotlinx.coroutines.flow.onSubscription
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
-import kotlin.time.Duration.Companion.seconds
 
 class RemoteJokesRepository @Inject constructor(
     private val api: RemoteApi,
@@ -30,8 +28,6 @@ class RemoteJokesRepository @Inject constructor(
     private val flowRemoteData = MutableStateFlow<List<Joke>?>(null)
 
     private val context: CoroutineContext = Dispatchers.IO
-
-    private val delayValue = 3.seconds
 
     private var isLoading = false
 
@@ -101,7 +97,6 @@ class RemoteJokesRepository @Inject constructor(
 
     fun getJokes(): Flow<List<Joke>> = flowRemoteData
         .onSubscription {
-            delay(delayValue)
             loadInitData()
         }
         .filterNotNull()
