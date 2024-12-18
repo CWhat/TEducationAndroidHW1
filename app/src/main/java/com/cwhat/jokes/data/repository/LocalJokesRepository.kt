@@ -5,18 +5,13 @@ import com.cwhat.jokes.data.db.toJoke
 import com.cwhat.jokes.data.db.toJokes
 import com.cwhat.jokes.domain.entity.Joke
 import com.cwhat.jokes.domain.entity.JokeType
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onStart
 import javax.inject.Inject
-import kotlin.time.Duration.Companion.seconds
 
 class LocalJokesRepository @Inject constructor(
     private val localJokeDao: LocalJokeDao,
 ) {
-
-    private val delayValue = 3.seconds
 
     suspend fun getJokeById(id: Int): Joke = localJokeDao.getJokeById(id).toJoke()
 
@@ -37,6 +32,5 @@ class LocalJokesRepository @Inject constructor(
 
     fun getJokes(): Flow<List<Joke>> = localJokeDao.getAllJokes()
         .map { dbJokes -> dbJokes.toJokes() }
-        .onStart { delay(delayValue) }
 
 }
